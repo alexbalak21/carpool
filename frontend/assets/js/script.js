@@ -1,1 +1,1 @@
-document.getElementById('main').innerHTML = 'HELLO'
+let main = document.getElementById('main').innerHTML
