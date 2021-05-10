@@ -3,6 +3,11 @@
   margin: 0;
 }
 
+#passError {
+  color: red;
+  display: none;
+}
+
 body {
   text-align: center;
 }
