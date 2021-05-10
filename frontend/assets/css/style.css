@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  text-align: center;
+}
+
+header {
+  height: 150px;
+  background: grey;
+}
+main {
+  display: flex;
+}
+aside {
+  display: block;
+  width: 10%;
+  min-height: 850px;
+  border: 1px solid black;
+}
+section {
+  display: block;
+  width: 80%;
+  min-height: 850px;
+  border: 1px solid black;
+}
+
+footer {
+  height: 70px;
+  background: grey;
+}
+
+/* NAVIGATION MENU  */
+.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.nav li {
+  float: left;
+}
+
+.nav li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  color: green;
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+table th,
+td {
+  min-width: 100px;
+  border: 1px solid black;
+}
+
+.display {
+  display: flex;
+  flex-wrap: wrap;
+}
+.card {
+  margin: 10px;
+  display: block;
+  width: 180px;
+  border: 1px solid black;
+}
+
+.card img {
+  width: 172px;
+}
+
+.product {
+  display: flex;
+  text-align: left;
+}
+
+.product img {
+  margin: 1em;
+  width: 25%;
+}
+
+.title {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.productDesc {
+  width: 60%;
+}
+.productPar {
+  margin-left: 5%;
+}
+
+.productPar span {
+  margin-right: 3%;
+}
+.price {
+  color: green;
+  font-size: x-large;
+}
+button a {
+  text-decoration: none;
+  color: black;
+}
