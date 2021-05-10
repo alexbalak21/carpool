@@ -3,30 +3,35 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
-    <title>TEMPLATE</title>
+    <title>CARPOOL</title>
   </head>
 
   <body>
     <ul class="nav">
       <li><a href="#home">Home</a></li>
-      <li style="float:right;"><a href="">Register</a></li>
-      <li style="float:right;"><a href="#about">Sing-In</a></li>
+      <li style="float: right"><a href="">Register</a></li>
+      <li style="float: right"><a href="#about">Sing-In</a></li>
     </ul>
     <main>
       <aside>
-        <h2>Aside Left</h2>
+        <h2>Content</h2>
       </aside>
       <section id="main">
         <div>
           <h1>LOGIN</h1>
-          <form action="" method="post">
+          <br />
+          <form id="loginForm" method="post">
             <label for="email">E-mail:</label><br />
-            <input type="text" />
+            <input type="email" value="alex@email.com" name="email" />
+            <br /><br />
+            <label for="password">Password:</label><br />
+            <input type="password" name="password" value="azerty" /><br /><br />
+            <input type="submit" value="Submit" />
           </form>
         </div>
       </section>
       <aside>
-        <h2>Aside Right</h2>
+        <h2>Content</h2>
       </aside>
     </main>
     <footer>
