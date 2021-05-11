@@ -10,8 +10,8 @@ let main = `
   <input type="submit" value="Submit" />
 </form>
 </div>`
-// document.getElementById('registrForm').addEventListener('submit', registerForm)
-document.getElementById('loginForm').addEventListener('submit', loginReq)
+document.getElementById('registrForm').addEventListener('submit', registerForm)
+// document.getElementById('loginForm').addEventListener('submit', loginReq)
 
 async function loginReqOld(event) {
   event.preventDefault()
@@ -26,7 +26,7 @@ async function loginReqOld(event) {
   })
   console.log(res)
 }
-
+//LOGIN REQUET
 async function loginReq(event) {
   event.preventDefault()
   let email = document.getElementsByName('email')[0].value
@@ -46,7 +46,7 @@ async function loginReq(event) {
   document.getElementById('test').innerHTML = output
 }
 
-// ADD POST WHEN FORM IS SUBMITED
+//REGISTER REQUEST
 async function registerForm(eve) {
   eve.preventDefault()
   let email = document.getElementsByName('email')[0].value
