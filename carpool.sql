@@ -61,24 +61,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `firstname`, `lastname`, `password`, `phone`, `img`, `reg_date`) VALUES
-(1, 'lara.croft@email.com', 'Lara', 'Croft', 'Azerty123', '06.88.55.47.88', 'profile.png', '2021-05-10 18:17:44'),
-(3, 'mara.croft@email.com', 'Lara', 'Croft', 'Azerty123', '06.85.55.47.88', 'profile.png', '2021-05-10 18:35:39'),
-(4, 'dara.croft@email.com', 'Lara', 'Croft', 'Azerty123', '07.85.55.47.88', 'profile.png', '2021-05-10 18:39:55'),
-(5, 'john.doe@email.com', 'John', 'Doe', 'azerty', '07.00.00.00.00', 'profile.png', '2021-05-10 19:26:18'),
-(6, 'alex.doe@email.com', 'Alex', 'Balak', 'azerty', '07.08.00.00.00', 'profile.png', '2021-05-10 19:45:13'),
-(7, 'john.wick@email.com', 'John', 'Wick', 'azerty', '07.10.20.00.00', 'profile.png', '2021-05-10 19:49:29'),
-(8, 'wohn.doe@email.com', 'Wohn', 'Doe', 'azerty', '67.00.00.00.00', 'profile.png', '2021-05-10 19:50:42'),
-(9, 'woh.doe@email.com', 'Wohn', 'Doe', 'azerty', '67.0.00.00.00', 'profile.png', '2021-05-10 19:51:48'),
-(10, 'woh.doe@emil.com', 'Wohn', 'Doe', 'azerty', '67.0.00.00.0', 'profile.png', '2021-05-10 19:53:37'),
-(11, 'john.doe@eail.com', 'John', 'Doe', 'azerty', '07.00.00.0.00', 'profile.png', '2021-05-10 19:56:45'),
-(12, 'woh.do@emil.com', 'Wohn', 'Doe', 'azerty', '67.0.00.00.', 'profile.png', '2021-05-10 19:58:11'),
-(13, 'john.doe@el.com', 'John', 'Doe', 'azerty', '07.00.00.00.', 'profile.png', '2021-05-10 19:59:32'),
-(14, 'john.de@email.com', 'John', 'Doe', 'azerty', '07.000.00.00', 'profile.png', '2021-05-10 20:00:00'),
-(15, 'john.doe@eaail.com', 'John', 'Doe', 'azerty', '07.00.00.00.99', 'profile.png', '2021-05-10 20:01:34');
 
 --
 -- Indexes for dumped tables

@@ -9,32 +9,22 @@
   <body>
     <ul class="nav">
       <li><a href="index.html">Home</a></li>
-      <li style="float: right"><a href="register.html">Register</a></li>
-      <li style="float: right"><a href="">Sing-In</a></li>
+      <li><a onclick="PlanTrip()" href="trip.html">Trips</a></li>
+      <li style="float: right"><a onclick="registerFormDisp()" href="#">Register</a></li>
+      <li style="float: right"><a onclick="loginForm()" href="#">Login-In</a></li>
     </ul>
     <main>
       <aside>
         <h2>Content</h2>
       </aside>
-      <section id="main">
-        <div>
-          <h1>LOGIN</h1>
-          <br />
-          <form id="loginForm" method="post">
-            <label for="email">E-mail:</label><br />
-            <input type="email" value="alex@email.com" name="email" />
-            <br /><br />
-            <label for="password">Password:</label><br />
-            <input type="password" name="password" value="azerty" /><br /><br />
-            <input type="submit" value="Submit" />
-          </form>
-        </div>
+      <section>
+        <div id="main">MAIN</div>
         <br />
-        <br />
-        <p id="test">TEST</p>
+        <p id="warning"></p>
       </section>
       <aside>
         <h2>Content</h2>
+        <p id="test">TEST</p>
       </aside>
     </main>
     <footer>

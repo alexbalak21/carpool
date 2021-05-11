@@ -3,7 +3,17 @@
   margin: 0;
 }
 
+#warning {
+  color: red;
+  display: none;
+}
+
 #passError {
+  color: red;
+  display: none;
+}
+
+#formError {
   color: red;
   display: none;
 }
