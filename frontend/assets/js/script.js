@@ -23,6 +23,7 @@ function currentTime() {
 }
 
 function tripForm() {
+  document.getElementById('title').innerHTML = 'CARPOOL - PLAN A TRIP'
   let date = currentDate()
   let time = currentTime()
   let main = `
@@ -63,6 +64,7 @@ function tripForm() {
 }
 
 function loginForm() {
+  document.getElementById('title').innerHTML = 'CARPOOL - LOGIN'
   let main = `
   <div>
   <h1>LOGIN</h1>
@@ -85,6 +87,7 @@ function PlanTrip() {
 }
 
 function registerFormDisp() {
+  document.getElementById('title').innerHTML = 'CARPOOL - REGISTER'
   let main = `
   <h1>REGISTER</h1>
   <br />
