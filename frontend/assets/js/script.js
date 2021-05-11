@@ -1,12 +1,17 @@
-document.getElementById('registerLink').addEventListener('click', registerFormDisp)
-document.getElementById('loginLink').addEventListener('click', loginForm)
-document.getElementById('tripFormLink').addEventListener('click', tripForm)
+document.getElementById("registerLink").addEventListener("click", registerFormDisp)
+document.getElementById("loginLink").addEventListener("click", loginForm)
+document.getElementById("GetTrips").addEventListener("click", getTrips)
 
-function currentDate() {
+function test() {
+  document.getElementById("test").innerHTML = "Account modification"
+}
+
+function currentDate(year = 0) {
   let n = new Date()
   let y = n.getFullYear()
+  y += year
   let m = n.getMonth() + 1
-  if (m < 10) m = '0' + m
+  if (m < 10) m = "0" + m
   let d = n.getDate()
   let today = `${y}-${m}-${d}`
   return today
@@ -15,30 +20,29 @@ function currentDate() {
 function currentTime() {
   let n = new Date()
   let h = n.getHours()
-  if (h < 10) h = '0' + h
+  if (h < 10) h = "0" + h
   let m = n.getMinutes()
-  if (m < 10) m = '0' + m
+  if (m < 10) m = "0" + m
   let time = `${h}:${m}`
   return time
 }
-
+// --------------------------------------------------------------------------------------- TRIP FORM CALL
 function tripForm() {
-  document.getElementById('title').innerHTML = 'CARPOOL - PLAN A TRIP'
+  document.getElementById("title").innerHTML = "CARPOOL - PLAN A TRIP"
   let date = currentDate()
   let time = currentTime()
   let main = `
   <h1>REGISTER A TRIP</h1>
   <br />
-  <form id="registrForm" method="post">
+  <form id="tripForm" method="post">
     <label >Departure Date: </label>
     <br />
-    <input type="date" name="date" min="${date}" value="${date}"/>
+    <input type="date" name="date" min="${date}" max=${currentDate(1)} value="${date}"/>
     <br />
     <label>Time</label>
     <br>
     <input type="time" name="time" value="${time}">
     <br>
-    <!-- PASSWORD SECTION -->
     <label>Departure:</label><br />
     <input type="text" name="departure" value="Paris" />
     <br />
@@ -53,18 +57,16 @@ function tripForm() {
     <br />
     <label>Price per Places:</label><br />
     <input type="number" value="25" name="price" />
-    <br /><br />
-  
-    <input type="checkbox" id="vehicle1" name="agree" value="true" />
-    <label for="agree">Agree to the terms.</label><br />
-    <br />
+    <br /><br>
     <input type="submit" value="Register the trip" />
   </form>`
-  document.getElementById('main').innerHTML = main
+  document.getElementById("main").innerHTML = main
+  document.getElementById("tripForm").addEventListener("click", postTrip)
 }
 
+//----------------------------------------------------------------LOGIN FORM CALL
 function loginForm() {
-  document.getElementById('title').innerHTML = 'CARPOOL - LOGIN'
+  document.getElementById("title").innerHTML = "CARPOOL - LOGIN"
   let main = `
   <div>
   <h1>LOGIN</h1>
@@ -79,15 +81,15 @@ function loginForm() {
   </form>
 </div>
   `
-  document.getElementById('main').innerHTML = main
-  document.getElementById('loginForm').addEventListener('submit', loginReq)
+  document.getElementById("main").innerHTML = main
+  document.getElementById("loginForm").addEventListener("submit", loginReq)
 }
 function PlanTrip() {
   return null
 }
-
+//--------------------------------------------------------------------------REGISTER FORM CALL
 function registerFormDisp() {
-  document.getElementById('title').innerHTML = 'CARPOOL - REGISTER'
+  document.getElementById("title").innerHTML = "CARPOOL - REGISTER"
   let main = `
   <h1>REGISTER</h1>
   <br />
@@ -124,64 +126,181 @@ function registerFormDisp() {
     <input type="submit" value="Submit" />
   </form>
   `
-  document.getElementById('main').innerHTML = main
-  document.getElementById('registrForm').addEventListener('submit', registerForm)
+  document.getElementById("main").innerHTML = main
+  document.getElementById("registrForm").addEventListener("submit", registerForm)
 }
 
-function createTrips() {}
-
-//LOGIN REQUEST
+// ------------------------------------------------------------------------LOGIN REQUEST
 async function loginReq(event) {
   event.preventDefault()
-  let email = document.getElementsByName('email')[0].value
-  let password = document.getElementsByName('password')[0].value
-  let result = await fetch('http://127.0.0.1/api/login/', {
-    method: 'POST',
+  let email = document.getElementsByName("email")[0].value
+  let password = document.getElementsByName("password")[0].value
+  let result = await fetch("http://127.0.0.1/api/login/", {
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       email: email,
-      password: password
-    })
+      password: password,
+    }),
   })
   let output = await result.text()
-  if (output == 'USER NOT FOUND' || output == 'WRONG PASSWORD') {
-    document.getElementById('warning').style.display = 'block'
-    document.getElementById('warning').innerHTML = output
+  if (output == "USER NOT FOUND" || output == "WRONG PASSWORD") {
+    document.getElementById("warning").style.display = "block"
+    document.getElementById("warning").innerHTML = output
   }
-  let connected_user = JSON.parse(output)
-  console.log(connected_user)
+  User = JSON.parse(output)
+  document.getElementsByClassName("nav")[0].innerHTML += `<li><a id="tripFormLink" href="#">Plann a Trip</a></li>`
+  document.getElementById("tripFormLink").addEventListener("click", tripForm)
+  sessionStorage.setItem("User", User["fistname"])
+  sessionStorage.setItem("UserEmail", User["email"])
+  document.getElementById("loginLink").style.display = "none"
+  document.getElementById("registerLink").innerHTML = User["firstname"]
+  document.getElementById("registerLink").removeEventListener("click", registerFormDisp)
+  document.getElementById("registerLink").id = "account"
+  document.getElementById("account").addEventListener("click", updateUser)
+  document.getElementById("GetTrips").addEventListener("click", getTrips)
 }
 
-//REGISTER REQUEST
+//-----------------------------------------------------------------------------REGISTER REQUEST
 async function registerForm(eve) {
   eve.preventDefault()
-  let email = document.getElementsByName('email')[0].value
-  let password = document.getElementsByName('password')[0].value
-  let password2 = document.getElementsByName('password2')[0].value
-  let firstname = document.getElementsByName('firstname')[0].value
-  let lastname = document.getElementsByName('lastname')[0].value
-  let phone = document.getElementsByName('phone')[0].value
-  let agree = document.getElementsByName('agree')[0].value
+  let email = document.getElementsByName("email")[0].value
+  let password = document.getElementsByName("password")[0].value
+  let password2 = document.getElementsByName("password2")[0].value
+  let firstname = document.getElementsByName("firstname")[0].value
+  let lastname = document.getElementsByName("lastname")[0].value
+  let phone = document.getElementsByName("phone")[0].value
+  let agree = document.getElementsByName("agree")[0].value
   if (password != password2) {
-    document.getElementById('passError').style.display = 'block'
+    document.getElementById("passError").style.display = "block"
     return null
   }
-  let res = await fetch('http://localhost/api/newuser/', {
-    method: 'POST',
+  let res = await fetch("http://localhost/api/newuser/", {
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       email: email,
       firstname: firstname,
       lastname: lastname,
       password: password,
-      phone: phone
-    })
+      phone: phone,
+    }),
   })
   let result = await res.text()
+  console.log(result)
+}
+//-----------------------------------------------------------------REGISTER A TRIP
+async function postTrip(event) {
+  event.preventDefault()
+  let date = document.getElementsByName("date")[0].value
+  let time = document.getElementsByName("time")[0].value
+  let datetime = date + " " + time + ":00"
+  let departure = document.getElementsByName("departure")[0].value
+  let arrival = document.getElementsByName("arrival")[0].value
+  let places = document.getElementsByName("avalablePlaces")[0].value
+  let price = document.getElementsByName("price")[0].value
+  let res = await fetch("http://localhost/api/newtrip/", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      driver_id: User["id"],
+      departure_time: datetime,
+      departure: departure,
+      arrival: arrival,
+      avalable_places: places,
+      price_per_passanger: price,
+    }),
+  })
+  let result = await res.text()
+  console.log(result)
+}
+
+// ----------------------------------------------------------------  GET ALL TRIPS
+async function getTrips() {
+  console.log("getTrips")
+  let addTh = ""
+  let addCol = ""
+  let res = await fetch("http://localhost/api/trips/")
+  let data = await res.json()
+  // if (typeof User !== "undefined") {
+  //   addTh = "<th>ADD</th>"
+  //   Container = `<td><button onclick="addToTrip(${User["id"]})">ADD</button></td>`
+  // }
+  let output = `
+    <table>
+    <tr>
+      <th>DATE TIME</th>
+      <th>FROM</th>
+      <th>TO</th>
+      <th>Places</th>
+      <th>Price</th>
+      
+    </tr>
+  `
+  data.forEach((trip) => {
+    output += `
+        <tr>
+        <td>${trip.departure_time}</td>
+        <td>${trip.departure}</td>
+        <td>${trip.arrival}</td>
+        <td>${trip.avalable_places}</td>
+        <td>${trip.price_per_passanger}
+        ${addCol}
+      </tr>
+      `
+  })
+  output += "<h1>Planned Trips</h1>" + "</table>"
+  document.getElementById("main").innerHTML = output
+  document.getElementsById("output").innerHTML = User
+}
+
+//----------------------------------------------------------------------------UPDATE USER PROFILE
+function updateUser() {
+  if (typeof User == "undefined") return null
+  document.getElementById("title").innerHTML = "CARPOOL - PROFILE"
+  let main = `
+  <h1>UPDATE PROFILE</h1>
+  <br />
+  <form id="updateUserForm" method="post">
+  <label id="profileID">${User["id"]}</label><br>
+    <label >E-mail:</label>
+    <br />
+    <input type="email" value="${User["email"]}" name="email" />
+    <br /><br />
+    <!-- PASSWORD SECTION -->
+    <label >Password:</label><br />
+    <input type="password" name="password" />
+    <br />
+    <label >Confirm Password:</label><br />
+    <input type="password" name="password2"/>
+    <br />
+    <p id="passError">
+      <br />
+      Passwords don't Match !
+    </p>
+    <br />
+    <label>Firstname:</label>
+    <br />
+    <input type="text" value="${User["firstname"]}" name="firstname" />
+    <br />
+    <label >Lastname:</label><br />
+    <input type="text" value="${User["lastname"]}" name="lastname" />
+    <br /><br />
+    <label >Phone Number:</label><br />
+    <input type="text" value="${User["phone"]}" name="phone" />
+    <br /><br />
+    <input type="submit" value="Update Profile" />
+  </form>
+  `
+  document.getElementById("main").innerHTML = main
+  document.getElementById("updateUserForm").addEventListener("submit", registerForm)
 }

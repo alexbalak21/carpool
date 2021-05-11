@@ -1,0 +1,31 @@
+<h1>REGISTER A TRIP</h1>
+<br />
+<form id="registrForm" method="post">
+  <label>Departure Date: </label>
+  <br />
+  <input type="date" name="date" min="${date}" max="${currentDate(1)}" value="${date}" />
+  <br />
+  <label>Time</label>
+  <br />
+  <input type="time" name="time" value="${time}" />
+  <br />
+  <!-- PASSWORD SECTION -->
+  <label>Departure:</label><br />
+  <input type="text" name="departure" value="Paris" />
+  <br />
+  <label>Arrival:</label><br />
+  <input type="text" name="arrival" value="Lyon" />
+  <br />
+  <p id="formError"></p>
+  <br />
+  <label>Avalable Places:</label>
+  <br />
+  <input type="number" value="3" name="avalablePlaces" />
+  <br />
+  <label>Price per Places:</label><br />
+  <input type="number" value="25" name="price" />
+  <br /><br />
+  <input type="submit" value="Register the trip" />
+</form>
+
+<button onclick="addToTrip()">ADD</button>
