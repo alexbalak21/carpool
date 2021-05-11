@@ -26,9 +26,9 @@ function router(){
     if($method == 'GET' && $request == 'users/')
     echo getAll("users");
 
+    if($method == 'GET' && $request == 'trips/')
+    echo getAll('trips');
 
-    if($method == 'GET' && $request == 'triptable/')
-    create_trips();
 
 
     //POST - USER
@@ -41,7 +41,7 @@ function router(){
     else
     echo "request error";
     if ($done)
-    echo 'REGISTERED';
+    echo searchUser('users', $data['email']);
     else
     echo "ERROR";
     }
