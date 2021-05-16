@@ -31,7 +31,16 @@ function router()
     }
 
     if ($method == 'GET' && $request == 'trips/') {
-        echo getAll('trips');
+        $data = getAll('trips');
+        foreach ($data as $key => $trip){
+           $driverID = $data[$key]['driver_id'];
+           $names = get1('users', $driverID, 'firstname, lastname');
+           $fisrt = $names['firstname'];
+           $last = $names['lastname'];
+           $fullname = "$fisrt $last";
+           $data[$key]['fullname'] = $fullname;
+        }
+        echo json_encode($data);
     }
 
     //POST - USER
@@ -107,7 +116,8 @@ function router()
         $id = (int)$nbr;
         //GET 1
         if ($method == 'GET') {
-            echo get1('users', $id);
+            $user = get1('users', $id);
+            echo json_encode($user);
         }
 
         //UPDATE

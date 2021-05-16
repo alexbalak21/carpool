@@ -71,21 +71,21 @@ function getAll($table = 'users')
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
     $data = $stmt->fetchAll();
     $dpo = null;
-    return json_encode($data);
+    return $data;
 }
 
 // GET BY ID
-function get1($table, $id)
+function get1($table, $id, $col= '*')
 {
     db_connect();
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM $table WHERE id=:id");
+    $stmt = $pdo->prepare("SELECT $col FROM $table WHERE id=:id");
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
     $data = $stmt->fetch();
     $pdo = null;
-    return json_encode($data);
+    return $data;
 }
 
 //GET BY MAIL

@@ -2,6 +2,8 @@ document.getElementById('registerLink').addEventListener('click', registerFormDi
 document.getElementById('loginLink').addEventListener('click', loginForm)
 document.getElementById('GetTrips').addEventListener('click', getTrips)
 
+User = ''
+
 let host = 'http://127.0.0.1/'
 let backendFolder = 'carpool/backend/'
 let url = host + backendFolder
@@ -30,7 +32,7 @@ function currentTime() {
   let time = `${h}:${m}`
   return time
 }
-// --------------------------------------------------------------------------------------- TRIP FORM CALL
+// --------------------------------------------------------------------------------------- TRIP FORM
 function tripForm() {
   document.getElementById('title').innerHTML = 'CARPOOL - PLAN A TRIP'
   let date = currentDate()
@@ -68,7 +70,7 @@ function tripForm() {
   document.getElementById('tripForm').addEventListener('submit', postTrip)
 }
 
-//----------------------------------------------------------------LOGIN FORM CALL
+//----------------------------------------------------------------LOGIN FORM
 function loginForm() {
   document.getElementById('title').innerHTML = 'CARPOOL - LOGIN'
   let main = `
@@ -89,7 +91,7 @@ function loginForm() {
   document.getElementById('loginForm').addEventListener('submit', loginReq)
 }
 
-//--------------------------------------------------------------------------REGISTER FORM CALL
+//--------------------------------------------------------------------------REGISTER FORM
 function registerFormDisp() {
   document.getElementById('title').innerHTML = 'CARPOOL - REGISTER'
   let main = `
@@ -244,8 +246,16 @@ async function postTrip(RegTrip) {
 
 // ----------------------------------------------------------------  GET ALL TRIPS
 async function getTrips() {
-  let addTh = ''
   let addCol = ''
+  let addTd = ''
+  let getOn = ''
+  let delTrip = "<button id='delTrip'>DELETE</button>"
+  let modify = "<button id='modTrip'>MODIFY</button>"
+
+  if (User !== '') {
+    addCol = '<th>Options</th>'
+    addTd = `<td>${getOn}${getOff}</td>`
+  }
   let res = await fetch(url + 'trips/')
   let data = await res.json()
   // if (typeof User !== "undefined") {
@@ -258,20 +268,41 @@ async function getTrips() {
       <th>DATE TIME</th>
       <th>FROM</th>
       <th>TO</th>
+      <th>DRIVER</th>
       <th>Avalable Places</th>
       <th>Price</th>
-      
+      ${addCol}
     </tr>
   `
   data.forEach((trip) => {
+    if (User !== '') {
+      let id = User['id']
+      if (
+        id == trip['passanger_1_id'] ||
+        id == trip['passanger_2_id'] ||
+        id == trip['passanger_3_id'] ||
+        id == trip['passanger_4_id'] ||
+        id == trip['passanger_5_id']
+      ) {
+        let getOff = `<button onclick="getOffTrip(${trip['id']})" id='getOff'>GET OFF</button>`
+        addTd = `<td>${getOff}</td>`
+        // document.getElementById('getOff').addEventListener('onclick', getOffTrip)
+      } else {
+        let getOn = `<button onclick="getOnTrip(${trip['id']})" id='getOn'>GET ON</button>`
+        addTd = `<td>${getOn}</td>`
+        // document.getElementById('getOn').addEventListener('onclick', getOnTrip)
+      }
+      if (id == trip['driver_id']) addTd = `<td>${delTrip} ${modify}</td>`
+    }
     output += `
         <tr>
         <td>${trip.departure_time}</td>
         <td>${trip.departure}</td>
         <td>${trip.arrival}</td>
+        <td>${trip.fullname}</td>
         <td>${trip.avalable_places}</td>
-        <td>${trip.price_per_passanger}
-        ${addCol}
+        <td>${trip.price_per_passanger}</td>
+        ${addTd}
       </tr>
       `
   })
@@ -319,4 +350,42 @@ function updateUser() {
   `
   document.getElementById('main').innerHTML = main
   document.getElementById('updateUserForm').addEventListener('submit', registerForm)
+}
+
+//---------------------------------------------------------------------------------------GET OFF TRIP
+async function getOffTrip(tripID) {
+  let userID = User['id']
+  console.log(tripID)
+  let result = await fetch(url + 'getofftrip/', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tripID: tripID,
+      userID: userID,
+    }),
+  })
+  console.log('DONE OFF')
+  getTrips()
+}
+
+//------------------------------------------------------------------------------------------GET ON TRIP
+async function getOnTrip(tripID) {
+  let userID = User['id']
+  console.log(tripID)
+  let result = await fetch(url + 'getontrip/', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tripID: tripID,
+      userID: userID,
+    }),
+  })
+  console.log('DONE ON')
+  getTrips()
 }
