@@ -56,7 +56,7 @@ function router()
         echo $id;
     }
 
-      //UPDATE
+      //UPDATE USER
       if ($method == 'POST' && $request=='updateuser/') {
         $body = file_get_contents('php://input');
         $data = json_decode($body, true);
@@ -66,6 +66,16 @@ function router()
             echo "request error";
         }
         echo $updatedID;
+    }
+    //----------------------------------------------------------------DELETE USER
+    if ($method == 'POST' && $request=='deleteuser/') {
+        $body = file_get_contents('php://input');
+        $data = json_decode($body, true);
+        if (json_last_error() == JSON_ERROR_NONE) {
+            $result = deleteUser($data['userID'], $data['userPass']);
+        } else {
+            echo "request error";
+        }
     }
 
     // CREATE TRIP
@@ -91,7 +101,7 @@ function router()
             }
         return $id;
         }
-
+        //-----------------------------------------------------------------DELETE TRIP
         if($method == "POST" && $request == 'deletetrip/'){
             $body = file_get_contents('php://input');
             $data = json_decode($body, true);

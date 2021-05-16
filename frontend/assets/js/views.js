@@ -112,7 +112,7 @@ function registerFormDisp() {
   let main = `
     <h1>REGISTER</h1>
     <br />
-    <form id="registrForm" method="post">
+    <form id="crateUserForm" method="post">
       <label for="email">E-mail:</label>
       <br />
       <input type="email" value="john.doe@email.com" name="email" />
@@ -143,10 +143,11 @@ function registerFormDisp() {
       <label for="agree">Agree to the terms.</label><br />
       <br />
       <input type="submit" value="Submit" />
-    </form>
+    </form> 
     `
   document.getElementById('main').innerHTML = main
-  document.getElementById('registrForm').addEventListener('submit', registerForm)
+  document.getElementById('crateUserForm').addEventListener('submit', createUser)
+  console.log('FROM DISPLAYED')
 }
 
 //----------------------------------------------------------------------------UPDATE USER FORM
@@ -184,10 +185,12 @@ function updateUserForm() {
       <input type="text" value="${User['phone']}" name="phone" />
       <br /><br />
       <input type="submit" value="Update Profile" />
-    </form>
+    </form><br><br><br><br>
+    <button id="deleteUser" value="1">DELETE ACCOUNT</button>
     `
   document.getElementById('main').innerHTML = main
   document.getElementById('updateUserForm').addEventListener('submit', updateUser)
+  document.getElementById('deleteUser').addEventListener('click', deleleteUser)
 }
 
 // ---------------------------------------------------------------------------------------CREATE TRIP FORM

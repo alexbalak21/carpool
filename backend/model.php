@@ -1,6 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: *");
 
 global $pdo;
 
@@ -244,3 +242,21 @@ function updateTrip($tripID, $departureTime, $departure, $arrival, $avalablePlac
     $pdo = null;
     return $last_id;
 }
+
+//---------------------------------------------------------------------------------------USER DELETE
+function deleteUser($id, $pass){
+    db_connect();
+    global $pdo;
+    $sql = "SELECT password FROM users WHERE id=$id";
+    $stmt = $pdo->query($sql);
+    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $result = $stmt->fetch();
+    $db_pass = $result['password'];
+    if($db_pass == $pass)
+    $stmt = $pdo->query("DELETE FROM users where id=$id");
+    $pdo = NULL;
+    echo "DELETED";
+}
+
+
+

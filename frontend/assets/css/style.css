@@ -3,6 +3,10 @@
   margin: 0;
 }
 
+#deleteUser {
+  color: red;
+}
+
 #warning {
   color: red;
   display: none;

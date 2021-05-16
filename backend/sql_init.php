@@ -1,5 +1,8 @@
 <?php
 
+global $pdo ;
+$pdo = NULL;
+
 // CONNECT TO MySQL and DATABASE
 function db_connect(){
     global $pdo;
@@ -18,8 +21,35 @@ try {
 }
 }
 
-//CREATE TABLE
-function create_table(){
+create_table_trips();
+create_table_users();
+
+//CREATE TABLE TRIPS
+function create_table_trips(){
+  db_connect();
+  global $pdo;
+  $sql = "CREATE TABLE `trips` (
+    `id` int(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `driver_id` int(11) NOT NULL,
+    `departure` varchar(50) NOT NULL,
+    `arrival` varchar(50) NOT NULL,
+    `price_per_passanger` int(11) DEFAULT NULL,
+    `avalable_places` int(11) NOT NULL,
+    `passanger_1_id` int(11) DEFAULT NULL,
+    `passanger_2_id` int(11) DEFAULT NULL,
+    `passanger_3_id` int(11) DEFAULT NULL,
+    `passanger_4_id` int(11) DEFAULT NULL,
+    `passanger_5_id` int(11) DEFAULT NULL,
+    `departure_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `reg_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)";
+      $pdo->exec($sql);
+      echo "TABLE TRIPS CREATED SUCCESSFULLY";
+      $pdo = NULL;
+}
+
+
+//CREATE TABLE USERS
+function create_table_users(){
   db_connect();
   global $pdo;
   $sql = "CREATE TABLE users (
@@ -33,7 +63,8 @@ function create_table(){
   reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )";
   $pdo->exec($sql);
-  echo "Table users created successfully";
+  echo "TABLE USERS CREATED SUCCESSFULLY";
+  $pdo = NULL;
 }
 
 //MySQL CONNECT
@@ -61,6 +92,7 @@ function db_create($dbname = 'testdb'){
     $conn=null;
     echo "DATABASE CREATED";
 }
+
 
 
 

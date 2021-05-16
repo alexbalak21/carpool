@@ -54,12 +54,14 @@ async function loginReq(event) {
   document.getElementById('registerLink').id = 'account'
   document.getElementById('account').addEventListener('click', updateUserForm)
   document.getElementById('GetTrips').addEventListener('click', getTrips)
+  document.getElementById('warning').style.display = 'none'
   getTrips()
 }
 
 //-----------------------------------------------------------------------------REGISTER USER
-async function registerForm(event) {
-  event.preventDefault()
+async function createUser(createUserEvent) {
+  console.log('createUser Enterd')
+  createUserEvent.preventDefault()
   let email = document.getElementsByName('email')[0].value
   let password = document.getElementsByName('password')[0].value
   let password2 = document.getElementsByName('password2')[0].value
@@ -67,11 +69,13 @@ async function registerForm(event) {
   let lastname = document.getElementsByName('lastname')[0].value
   let phone = document.getElementsByName('phone')[0].value
   let agree = document.getElementsByName('agree')[0].value
+  console.log('FORM VALUES IMPORTED')
   if (password != password2) {
     document.getElementById('passError').style.display = 'block'
     return null
   }
-  let res = await fetch(url + 'newuser/', {
+  console.log('PASSWORD CHEKC DONE')
+  let res = await fetch('http://localhost/carpool/backend/newuser/', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -85,8 +89,7 @@ async function registerForm(event) {
       phone: phone,
     }),
   })
-  let id = await res.text()
-  if (id > 0) document.getElementById('passError').style.display = 'none'
+  console.log('FETCH DONE')
   loginForm()
 }
 
@@ -135,6 +138,27 @@ async function updateUser(event) {
   console.log(result)
 }
 
+//-------------------------------------------------------------------------DELETE USER ACCOUNT
+async function deleleteUser(event) {
+  console.log('DELETE USER REQUEST JS')
+  event.preventDefault()
+  if (User == '') return null
+  let userID = User['id']
+  let userPass = document.getElementsByName('password')[0].value
+  let res = await fetch(url + 'deleteuser/', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userID: userID,
+      userPass: userPass,
+    }),
+  })
+  loginForm()
+}
+
 //-----------------------------------------------------------------CREATE A TRIP
 async function postTrip(RegTrip) {
   RegTrip.preventDefault()
@@ -160,7 +184,7 @@ async function postTrip(RegTrip) {
       price_per_passanger: price,
     }),
   })
-  getOnTrips()
+  getTrips()
 }
 
 //---------------------------------------------------------------------------------------GET OFF TRIP
