@@ -138,13 +138,14 @@ async function updateUser(event) {
   console.log(result)
 }
 
-//-------------------------------------------------------------------------DELETE USER ACCOUNT
+//-------------------------------------------------------------------------DELETE USER
 async function deleleteUser(event) {
   console.log('DELETE USER REQUEST JS')
   event.preventDefault()
   if (User == '') return null
   let userID = User['id']
   let userPass = document.getElementsByName('password')[0].value
+  if (userPass == '') return null
   let res = await fetch(url + 'deleteuser/', {
     method: 'POST',
     headers: {
@@ -156,7 +157,7 @@ async function deleleteUser(event) {
       userPass: userPass,
     }),
   })
-  loginForm()
+  location.reload()
 }
 
 //-----------------------------------------------------------------CREATE A TRIP
