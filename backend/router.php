@@ -26,6 +26,7 @@ function router()
         echo 'HOME<br><br>';
     }
 
+
     if ($method == 'GET' && $request == "users/") {
         echo getAll("users");
     }
@@ -43,7 +44,7 @@ function router()
         echo json_encode($data);
     }
 
-    //POST - USER
+    //CREATE - USER
     if ($method == "POST" && $request == 'newuser/') {
         $body = file_get_contents('php://input');
         $data = json_decode($body, true);
@@ -55,7 +56,19 @@ function router()
         echo $id;
     }
 
-    // POST - TRIP
+      //UPDATE
+      if ($method == 'POST' && $request=='updateuser/') {
+        $body = file_get_contents('php://input');
+        $data = json_decode($body, true);
+        if (json_last_error() == JSON_ERROR_NONE) {
+            $updatedID = updateUser($data['id'], $data['email'], $data['firstname'], $data['lastname'], $data['password'], $data['phone']);
+        } else {
+            echo "request error";
+        }
+        echo $updatedID;
+    }
+
+    // CREATE TRIP
     if ($method == "POST" && $request == 'newtrip/') {
         $body = file_get_contents('php://input');
         $data = json_decode($body, true);
@@ -64,14 +77,32 @@ function router()
         } else {
             echo "request error";
         }
+    return $done;
+    }
 
-        if ($done) {
-            echo $body;
-        } else {
-            echo "ERROR";
+        // UPDATE TRIP
+        if ($method == "POST" && $request == 'updatetrip/') {
+            $body = file_get_contents('php://input');
+            $data = json_decode($body, true);
+            if (json_last_error() == JSON_ERROR_NONE) {
+                $id = updateTrip($data['tripID'], $data['departure_time'], $data['departure'], $data['arrival'], $data['avalable_places'], $data['price_per_passanger']);
+            } else {
+                echo "request error";
+            }
+        return $id;
         }
 
-    }
+        if($method == "POST" && $request == 'deletetrip/'){
+            $body = file_get_contents('php://input');
+            $data = json_decode($body, true);
+            if (json_last_error() == JSON_ERROR_NONE) {
+                $id = deleteCheck($data['tripID'], $data['userID']);
+            } else {
+                echo "request error";
+            }
+        }
+
+
 
     //LOGIN
     if ($request == 'login/' && $method == 'POST') {
@@ -120,22 +151,8 @@ function router()
             echo json_encode($user);
         }
 
-        //UPDATE
-        if ($method == 'PUT') {
-            $body = file_get_contents('php://input');
-            $data = json_decode($body, true);
-            if (json_last_error() == JSON_ERROR_NONE) {
-                $done = update($id, $data['email'], $data['firstname'], $data['lastname'], $data['password'], $data['phone']);
-            } else {
-                echo "request error";
-            }
-
-            if ($done) {
-                echo "UPDATED";
-            }
-
-        }
-        if ($method == 'DELETE') {
+        //DELETE USER.
+        if ($method == 'POST' && $request=='deleteuser/') {
             $result = delete1('users', $id);
         }
 

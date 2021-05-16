@@ -1,4 +1,6 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
 
 global $pdo;
 
@@ -34,11 +36,7 @@ function regUser($email, $firstname, $lastname, $password, $phone)
     $stmt->bindParam(':phone', $phone);
     $done = $stmt->execute();
     $last_id = $pdo->lastInsertId();
-    if ($done) {
-        return $last_id;
-    } else {
-        return "ERROR";
-    }
+    return $last_id;
 }
 
 //CREATE TRIP
@@ -114,6 +112,19 @@ function delete1($table, $id)
     return 'DELETED';
 }
 
+function deleteCheck($id, $reqID){
+    db_connect();
+    global $pdo;
+    $sql = "SELECT driver_id FROM trips WHERE id=$id";
+    $stmt = $pdo->query($sql);
+    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $result = $stmt->fetch();
+    $driverID = $result['driver_id'];
+    if($reqID == $driverID)
+    $stmt = $pdo->query("DELETE FROM trips where id=$id");
+    $pdo = NULL;
+}
+
 // GET BY FIRST NAME
 function getName($table, $name)
 {
@@ -128,8 +139,8 @@ function getName($table, $name)
     $dpo = null;
 }
 
-//PUT - UPDATE
-function update($id, $email, $firstname, $lastname, $password, $phone)
+// UPDATE USER
+function updateUser($id, $email, $firstname, $lastname, $password, $phone)
 {
     db_connect();
     global $pdo;
@@ -204,4 +215,32 @@ function getOffTrip($tripID, $passengerID)
     }
     $pdo = NULL;
     return get1('trips', $tripID);
+}
+
+
+
+//CREATE TRIP
+function updateTrip($tripID, $departureTime, $departure, $arrival, $avalablePlaces, $pricePerPass)
+{
+    db_connect();
+    global $pdo;
+
+    $sql = "UPDATE trips SET
+    departure_time = :departure_time,
+    departure = :departure,
+    arrival = :arrival,
+    avalable_places = :avalable_places,
+    price_per_passanger = :price_per_passanger
+    WHERE id=:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':departure_time', $departureTime);
+    $stmt->bindParam(':departure', $departure);
+    $stmt->bindParam(':arrival', $arrival);
+    $stmt->bindParam(':avalable_places', $avalablePlaces, PDO::PARAM_INT);
+    $stmt->bindParam(':price_per_passanger', $pricePerPass, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $tripID, PDO::PARAM_INT);
+    $done = $stmt->execute();
+    $last_id = $pdo->lastInsertId();
+    $pdo = null;
+    return $last_id;
 }
