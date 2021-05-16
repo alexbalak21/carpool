@@ -1,9 +1,13 @@
-document.getElementById("registerLink").addEventListener("click", registerFormDisp)
-document.getElementById("loginLink").addEventListener("click", loginForm)
-document.getElementById("GetTrips").addEventListener("click", getTrips)
+document.getElementById('registerLink').addEventListener('click', registerFormDisp)
+document.getElementById('loginLink').addEventListener('click', loginForm)
+document.getElementById('GetTrips').addEventListener('click', getTrips)
+
+let host = 'http://127.0.0.1/'
+let backendFolder = 'carpool/backend/'
+let url = host + backendFolder
 
 function test() {
-  document.getElementById("test").innerHTML = "Account modification"
+  document.getElementById('test').innerHTML = 'Account modification'
 }
 
 function currentDate(year = 0) {
@@ -11,7 +15,7 @@ function currentDate(year = 0) {
   let y = n.getFullYear()
   y += year
   let m = n.getMonth() + 1
-  if (m < 10) m = "0" + m
+  if (m < 10) m = '0' + m
   let d = n.getDate()
   let today = `${y}-${m}-${d}`
   return today
@@ -20,15 +24,15 @@ function currentDate(year = 0) {
 function currentTime() {
   let n = new Date()
   let h = n.getHours()
-  if (h < 10) h = "0" + h
+  if (h < 10) h = '0' + h
   let m = n.getMinutes()
-  if (m < 10) m = "0" + m
+  if (m < 10) m = '0' + m
   let time = `${h}:${m}`
   return time
 }
 // --------------------------------------------------------------------------------------- TRIP FORM CALL
 function tripForm() {
-  document.getElementById("title").innerHTML = "CARPOOL - PLAN A TRIP"
+  document.getElementById('title').innerHTML = 'CARPOOL - PLAN A TRIP'
   let date = currentDate()
   let time = currentTime()
   let main = `
@@ -60,13 +64,13 @@ function tripForm() {
     <br /><br>
     <input type="submit" value="Register the trip" />
   </form>`
-  document.getElementById("main").innerHTML = main
-  document.getElementById("tripForm").addEventListener("click", postTrip)
+  document.getElementById('main').innerHTML = main
+  document.getElementById('tripForm').addEventListener('submit', postTrip)
 }
 
 //----------------------------------------------------------------LOGIN FORM CALL
 function loginForm() {
-  document.getElementById("title").innerHTML = "CARPOOL - LOGIN"
+  document.getElementById('title').innerHTML = 'CARPOOL - LOGIN'
   let main = `
   <div>
   <h1>LOGIN</h1>
@@ -81,15 +85,13 @@ function loginForm() {
   </form>
 </div>
   `
-  document.getElementById("main").innerHTML = main
-  document.getElementById("loginForm").addEventListener("submit", loginReq)
+  document.getElementById('main').innerHTML = main
+  document.getElementById('loginForm').addEventListener('submit', loginReq)
 }
-function PlanTrip() {
-  return null
-}
+
 //--------------------------------------------------------------------------REGISTER FORM CALL
 function registerFormDisp() {
-  document.getElementById("title").innerHTML = "CARPOOL - REGISTER"
+  document.getElementById('title').innerHTML = 'CARPOOL - REGISTER'
   let main = `
   <h1>REGISTER</h1>
   <br />
@@ -126,20 +128,30 @@ function registerFormDisp() {
     <input type="submit" value="Submit" />
   </form>
   `
-  document.getElementById("main").innerHTML = main
-  document.getElementById("registrForm").addEventListener("submit", registerForm)
+  document.getElementById('main').innerHTML = main
+  document.getElementById('registrForm').addEventListener('submit', registerForm)
 }
 
 // ------------------------------------------------------------------------LOGIN REQUEST
 async function loginReq(event) {
   event.preventDefault()
-  let email = document.getElementsByName("email")[0].value
-  let password = document.getElementsByName("password")[0].value
-  let result = await fetch("http://127.0.0.1/api/login/", {
-    method: "POST",
+  let email = document.getElementsByName('email')[0].value
+  let password = document.getElementsByName('password')[0].value
+  if (email == '') {
+    document.getElementById('warning').style.display = 'block'
+    document.getElementById('warning').innerHTML = 'EMAIL IS EMPTY'
+    return null
+  }
+  if (password == '') {
+    document.getElementById('warning').style.display = 'block'
+    document.getElementById('warning').innerHTML = 'PASSWORD IS EMPTY'
+    return null
+  }
+  let result = await fetch(url + 'login/', {
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       email: email,
@@ -147,42 +159,46 @@ async function loginReq(event) {
     }),
   })
   let output = await result.text()
-  if (output == "USER NOT FOUND" || output == "WRONG PASSWORD") {
-    document.getElementById("warning").style.display = "block"
-    document.getElementById("warning").innerHTML = output
-  }
-  User = JSON.parse(output)
-  document.getElementsByClassName("nav")[0].innerHTML += `<li><a id="tripFormLink" href="#">Plann a Trip</a></li>`
-  document.getElementById("tripFormLink").addEventListener("click", tripForm)
-  sessionStorage.setItem("User", User["fistname"])
-  sessionStorage.setItem("UserEmail", User["email"])
-  document.getElementById("loginLink").style.display = "none"
-  document.getElementById("registerLink").innerHTML = User["firstname"]
-  document.getElementById("registerLink").removeEventListener("click", registerFormDisp)
-  document.getElementById("registerLink").id = "account"
-  document.getElementById("account").addEventListener("click", updateUser)
-  document.getElementById("GetTrips").addEventListener("click", getTrips)
-}
-
-//-----------------------------------------------------------------------------REGISTER REQUEST
-async function registerForm(eve) {
-  eve.preventDefault()
-  let email = document.getElementsByName("email")[0].value
-  let password = document.getElementsByName("password")[0].value
-  let password2 = document.getElementsByName("password2")[0].value
-  let firstname = document.getElementsByName("firstname")[0].value
-  let lastname = document.getElementsByName("lastname")[0].value
-  let phone = document.getElementsByName("phone")[0].value
-  let agree = document.getElementsByName("agree")[0].value
-  if (password != password2) {
-    document.getElementById("passError").style.display = "block"
+  if (output == 'USER NOT FOUND' || output == 'WRONG PASSWORD') {
+    document.getElementById('warning').style.display = 'block'
+    document.getElementById('warning').innerHTML = output
     return null
   }
-  let res = await fetch("http://localhost/api/newuser/", {
-    method: "POST",
+  User = JSON.parse(output)
+  console.log(User)
+  document.getElementsByClassName('nav')[0].innerHTML += `<li><a id="tripFormLink" href="#">Plann a Trip</a></li>`
+  document.getElementById('tripFormLink').addEventListener('click', tripForm)
+  sessionStorage.setItem('User', User['fistname'])
+  sessionStorage.setItem('UserEmail', User['email'])
+  document.getElementById('loginLink').style.display = 'none'
+  document.getElementById('registerLink').innerHTML = User['firstname']
+  document.getElementById('registerLink').removeEventListener('click', registerFormDisp)
+  document.getElementById('registerLink').id = 'account'
+  document.getElementById('account').addEventListener('click', updateUser)
+  document.getElementById('GetTrips').addEventListener('click', getTrips)
+}
+
+function userPage() {}
+
+//-----------------------------------------------------------------------------REGISTER USER
+async function registerForm(event) {
+  event.preventDefault()
+  let email = document.getElementsByName('email')[0].value
+  let password = document.getElementsByName('password')[0].value
+  let password2 = document.getElementsByName('password2')[0].value
+  let firstname = document.getElementsByName('firstname')[0].value
+  let lastname = document.getElementsByName('lastname')[0].value
+  let phone = document.getElementsByName('phone')[0].value
+  let agree = document.getElementsByName('agree')[0].value
+  if (password != password2) {
+    document.getElementById('passError').style.display = 'block'
+    return null
+  }
+  let res = await fetch(url + 'newuser/', {
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       email: email,
@@ -192,27 +208,29 @@ async function registerForm(eve) {
       phone: phone,
     }),
   })
-  let result = await res.text()
-  console.log(result)
+  let id = await res.text()
+  if (id > 0) document.getElementById('passError').style.display = 'none'
+  loginForm()
+  console.log(id)
 }
 //-----------------------------------------------------------------REGISTER A TRIP
-async function postTrip(event) {
-  event.preventDefault()
-  let date = document.getElementsByName("date")[0].value
-  let time = document.getElementsByName("time")[0].value
-  let datetime = date + " " + time + ":00"
-  let departure = document.getElementsByName("departure")[0].value
-  let arrival = document.getElementsByName("arrival")[0].value
-  let places = document.getElementsByName("avalablePlaces")[0].value
-  let price = document.getElementsByName("price")[0].value
-  let res = await fetch("http://localhost/api/newtrip/", {
-    method: "POST",
+async function postTrip(RegTrip) {
+  RegTrip.preventDefault()
+  let date = document.getElementsByName('date')[0].value
+  let time = document.getElementsByName('time')[0].value
+  let datetime = date + ' ' + time + ':00'
+  let departure = document.getElementsByName('departure')[0].value
+  let arrival = document.getElementsByName('arrival')[0].value
+  let places = document.getElementsByName('avalablePlaces')[0].value
+  let price = document.getElementsByName('price')[0].value
+  let res = await fetch(url + 'newtrip/', {
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      driver_id: User["id"],
+      driver_id: User['id'],
       departure_time: datetime,
       departure: departure,
       arrival: arrival,
@@ -226,10 +244,9 @@ async function postTrip(event) {
 
 // ----------------------------------------------------------------  GET ALL TRIPS
 async function getTrips() {
-  console.log("getTrips")
-  let addTh = ""
-  let addCol = ""
-  let res = await fetch("http://localhost/api/trips/")
+  let addTh = ''
+  let addCol = ''
+  let res = await fetch(url + 'trips/')
   let data = await res.json()
   // if (typeof User !== "undefined") {
   //   addTh = "<th>ADD</th>"
@@ -241,7 +258,7 @@ async function getTrips() {
       <th>DATE TIME</th>
       <th>FROM</th>
       <th>TO</th>
-      <th>Places</th>
+      <th>Avalable Places</th>
       <th>Price</th>
       
     </tr>
@@ -258,23 +275,22 @@ async function getTrips() {
       </tr>
       `
   })
-  output += "<h1>Planned Trips</h1>" + "</table>"
-  document.getElementById("main").innerHTML = output
-  document.getElementsById("output").innerHTML = User
+  output += '<h1>Planned Trips</h1>' + '</table>'
+  document.getElementById('main').innerHTML = output
 }
 
 //----------------------------------------------------------------------------UPDATE USER PROFILE
 function updateUser() {
-  if (typeof User == "undefined") return null
-  document.getElementById("title").innerHTML = "CARPOOL - PROFILE"
+  if (typeof User == 'undefined') return null
+  document.getElementById('title').innerHTML = 'CARPOOL - PROFILE'
   let main = `
   <h1>UPDATE PROFILE</h1>
   <br />
   <form id="updateUserForm" method="post">
-  <label id="profileID">${User["id"]}</label><br>
+  <label id="profileID">${User['id']}</label><br>
     <label >E-mail:</label>
     <br />
-    <input type="email" value="${User["email"]}" name="email" />
+    <input type="email" value="${User['email']}" name="email" />
     <br /><br />
     <!-- PASSWORD SECTION -->
     <label >Password:</label><br />
@@ -290,17 +306,17 @@ function updateUser() {
     <br />
     <label>Firstname:</label>
     <br />
-    <input type="text" value="${User["firstname"]}" name="firstname" />
+    <input type="text" value="${User['firstname']}" name="firstname" />
     <br />
     <label >Lastname:</label><br />
-    <input type="text" value="${User["lastname"]}" name="lastname" />
+    <input type="text" value="${User['lastname']}" name="lastname" />
     <br /><br />
     <label >Phone Number:</label><br />
-    <input type="text" value="${User["phone"]}" name="phone" />
+    <input type="text" value="${User['phone']}" name="phone" />
     <br /><br />
     <input type="submit" value="Update Profile" />
   </form>
   `
-  document.getElementById("main").innerHTML = main
-  document.getElementById("updateUserForm").addEventListener("submit", registerForm)
+  document.getElementById('main').innerHTML = main
+  document.getElementById('updateUserForm').addEventListener('submit', registerForm)
 }
