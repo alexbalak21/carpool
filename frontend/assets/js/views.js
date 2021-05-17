@@ -3,7 +3,7 @@ function currentDate(year = 0) {
   let y = n.getFullYear()
   y += year
   let m = n.getMonth() + 1
-  if (m < 10) m = '0' + m
+  if (m < 10) m = "0" + m
   let d = n.getDate()
   let today = `${y}-${m}-${d}`
   return today
@@ -12,20 +12,20 @@ function currentDate(year = 0) {
 function currentTime() {
   let n = new Date()
   let h = n.getHours()
-  if (h < 10) h = '0' + h
+  if (h < 10) h = "0" + h
   let m = n.getMinutes()
-  if (m < 10) m = '0' + m
+  if (m < 10) m = "0" + m
   let time = `${h}:${m}`
   return time
 }
 
 // ----------------------------------------------------------------  GET ALL TRIPS
 async function getTrips() {
-  let addCol = ''
-  let addTd = ''
-  let getOn = ''
+  let addCol = ""
+  let addTd = ""
+  let getOn = ""
 
-  let res = await fetch(url + 'trips/')
+  let res = await fetch(url + "trips/")
   let data = await res.json()
   // if (typeof User !== "undefined") {
   //   addTh = "<th>ADD</th>"
@@ -44,15 +44,15 @@ async function getTrips() {
       </tr>
     `
   data.forEach((trip) => {
-    if (User !== '') {
-      addCol = '<th>Options</th>'
-      let id = User['id']
+    if (User !== "") {
+      addCol = "<th>Options</th>"
+      let id = User["id"]
       if (
-        id == trip['passanger_1_id'] ||
-        id == trip['passanger_2_id'] ||
-        id == trip['passanger_3_id'] ||
-        id == trip['passanger_4_id'] ||
-        id == trip['passanger_5_id']
+        id == trip["passanger_1_id"] ||
+        id == trip["passanger_2_id"] ||
+        id == trip["passanger_3_id"] ||
+        id == trip["passanger_4_id"] ||
+        id == trip["passanger_5_id"]
       ) {
         let getOff = `<button onclick="getOffTrip(${trip.id})" id='getOff'>GET OFF</button>`
         addTd = `<td>${getOff}</td>`
@@ -62,7 +62,7 @@ async function getTrips() {
         addTd = `<td>${getOn}</td>`
         // document.getElementById('getOn').addEventListener('onclick', getOnTrip)
       }
-      if (id == trip['driver_id']) {
+      if (id == trip["driver_id"]) {
         let modify = `<button onclick="updateTripForm(${trip.id}, '${trip.departure_time}', '${trip.departure}', '${trip.arrival}', ${trip.avalable_places}, ${trip.price_per_passanger})" id='updateTrip'>MODIFY</button>`
         let delTrip = `<button onclick="deleteTrip(${trip.id})" id='getOn'>DELETE</button>`
         addTd = `<td>${delTrip} ${modify}</td>`
@@ -80,14 +80,14 @@ async function getTrips() {
         </tr>
         `
   })
-  output += '<h1>Planned Trips</h1>' + '</table>'
-  document.getElementById('main').innerHTML = output
+  output += "<h1>Planned Trips</h1>" + "</table>"
+  document.getElementById("main").innerHTML = output
 }
 
 //----------------------------------------------------------------------------------------USERS
 //----------------------------------------------------------------LOGIN FORM
 function loginForm() {
-  document.getElementById('title').innerHTML = 'CARPOOL - LOGIN'
+  document.getElementById("title").innerHTML = "CARPOOL - LOGIN"
   let main = `
     <div>
     <h1>LOGIN</h1>
@@ -102,13 +102,13 @@ function loginForm() {
     </form>
   </div>
     `
-  document.getElementById('main').innerHTML = main
-  document.getElementById('loginForm').addEventListener('submit', loginReq)
+  document.getElementById("main").innerHTML = main
+  document.getElementById("loginForm").addEventListener("submit", loginReq)
 }
 
 //------------------------------------------------------------------REGISTER USER FORM
 function registerFormDisp() {
-  document.getElementById('title').innerHTML = 'CARPOOL - REGISTER'
+  document.getElementById("title").innerHTML = "CARPOOL - REGISTER"
   let main = `
     <h1>REGISTER</h1>
     <br />
@@ -145,23 +145,23 @@ function registerFormDisp() {
       <input type="submit" value="Submit" />
     </form> 
     `
-  document.getElementById('main').innerHTML = main
-  document.getElementById('crateUserForm').addEventListener('submit', createUser)
-  console.log('FROM DISPLAYED')
+  document.getElementById("main").innerHTML = main
+  document.getElementById("crateUserForm").addEventListener("submit", createUser)
+  console.log("FROM DISPLAYED")
 }
 
 //----------------------------------------------------------------------------UPDATE USER FORM
 function updateUserForm() {
-  if (typeof User == 'undefined') return null
-  document.getElementById('title').innerHTML = 'CARPOOL - PROFILE'
+  if (typeof User == "undefined") return null
+  document.getElementById("title").innerHTML = "CARPOOL - PROFILE"
   let main = `
     <h1>UPDATE PROFILE</h1>
     <br />
     <form id="updateUserForm" method="post">
-    <label id="profileID">${User['id']}</label><br>
+    <label id="profileID">${User["id"]}</label><br>
       <label >E-mail:</label>
       <br />
-      <input type="email" value="${User['email']}" name="email" />
+      <input type="email" value="${User["email"]}" name="email" />
       <br /><br />
       <!-- PASSWORD SECTION -->
       <label >Password:</label><br />
@@ -176,52 +176,26 @@ function updateUserForm() {
       <br />
       <label>Firstname:</label>
       <br />
-      <input type="text" value="${User['firstname']}" name="firstname" />
+      <input type="text" value="${User["firstname"]}" name="firstname" />
       <br />
       <label >Lastname:</label><br />
-      <input type="text" value="${User['lastname']}" name="lastname" />
+      <input type="text" value="${User["lastname"]}" name="lastname" />
       <br /><br />
       <label >Phone Number:</label><br />
-      <input type="text" value="${User['phone']}" name="phone" />
+      <input type="text" value="${User["phone"]}" name="phone" />
       <br /><br />
       <input type="submit" value="Update Profile" />
     </form><br><br><br><br>
-    <button id="deleteUserbtn">DELETE ACCOUNT</button>
-</div>
-
-<div id="confirmDeleteUser" class="modal">
-
-<!-- Modal content -->
-<div class="modal-content">
-  <span class="close">&times;</span>
-  <h2>Are you Sure to delete your account.</h2><br><br>
-  <label >Plese Confirm your Password:</label><br /><br><br>
-  <input type="password" id="ModalPassword" /><br><br><br>
-  <button id="deleteUser">DELETE ACCOUNT</button><br><br>
-  <button id="cancelModal">CANCEL</button>
-  
-</div>
-
+    <button id="deleteUserConfirm" value="1">DELETE ACCOUNT</button>
     `
-
-  document.getElementById('main').innerHTML = main
-  document.getElementById('updateUserForm').addEventListener('submit', updateUser)
-
-  document.getElementById('deleteUserbtn').addEventListener('click', () => {
-    document.getElementById('confirmDeleteUser').style.display = 'block'
-  })
-  document.getElementsByClassName('close')[0].addEventListener('click', () => {
-    document.getElementById('confirmDeleteUser').style.display = 'none'
-  })
-  document.getElementById('cancelModal').addEventListener('click', () => {
-    document.getElementById('confirmDeleteUser').style.display = 'none'
-  })
-  document.getElementById('deleteUser').addEventListener('click', deleleteUser)
+  document.getElementById("main").innerHTML = main
+  document.getElementById("updateUserForm").addEventListener("submit", updateUser)
+  document.getElementById("deleteUserConfirm").addEventListener("click", deleteUserModal)
 }
 
 // ---------------------------------------------------------------------------------------CREATE TRIP FORM
 function tripForm() {
-  document.getElementById('title').innerHTML = 'CARPOOL - PLAN A TRIP'
+  document.getElementById("title").innerHTML = "CARPOOL - PLAN A TRIP"
   let date = currentDate()
   let time = currentTime()
   let main = `
@@ -253,14 +227,14 @@ function tripForm() {
       <br /><br>
       <input type="submit" value="Register the trip" />
     </form>`
-  document.getElementById('main').innerHTML = main
-  document.getElementById('tripForm').addEventListener('submit', postTrip)
+  document.getElementById("main").innerHTML = main
+  document.getElementById("tripForm").addEventListener("submit", postTrip)
 }
 
 // ------------------------------------------------------------------------------------------- UPDATE TRIP FORM
 function updateTripForm(id, dep_time, departure, arrival, avalablePlaces, price_per_passanger) {
-  document.getElementById('title').innerHTML = 'CARPOOL - PLAN A TRIP'
-  let dateTime = dep_time.split(' ')
+  document.getElementById("title").innerHTML = "CARPOOL - PLAN A TRIP"
+  let dateTime = dep_time.split(" ")
   let main = `
       <h1>UPDATE A TRIP</h1>
       <br />
@@ -291,8 +265,28 @@ function updateTripForm(id, dep_time, departure, arrival, avalablePlaces, price_
         <br /><br>
         <input type="submit" value="Update the trip" />
       </form>`
-  document.getElementById('main').innerHTML = main
-  document.getElementById('tripUpdateForm').addEventListener('submit', updateTrip)
+  document.getElementById("main").innerHTML = main
+  document.getElementById("tripUpdateForm").addEventListener("submit", updateTrip)
 }
 
-//---------------------------------------DELETE USER MODAL
+function deleteUserModal() {
+  let modalContent = `
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <h2>Are you Sure to delete your account.</h2><br><br>
+  <label >Plese Confirm your Password:</label><br /><br><br>
+  <input type="password" id="ModalPassword" /><br><br><br>
+  <button id="deleteUser">DELETE ACCOUNT</button><br><br>
+  <button id="cancelModal">CANCEL</button>
+</div>
+  `
+  document.getElementById("dispModal").innerHTML = modalContent
+  document.getElementById("dispModal").style.display = "block"
+  document.getElementsByClassName("close")[0].addEventListener("click", () => {
+    document.getElementById("dispModal").style.display = "none"
+  })
+  document.getElementById("cancelModal").addEventListener("click", () => {
+    document.getElementById("dispModal").style.display = "none"
+  })
+  document.getElementById("deleteUser").addEventListener("click", deleleteUser)
+}
