@@ -1,5 +1,8 @@
-document.getElementById("registerLink").addEventListener("click", registerFormDisp)
-document.getElementById("loginLink").addEventListener("click", loginForm)
+loginLink = document.getElementById("loginLink")
+registerLink = document.getElementById("registerLink")
+
+loginLink.addEventListener("click", loginForm)
+registerLink.addEventListener("click", registerFormDisp)
 document.getElementById("GetTrips").addEventListener("click", getTrips)
 
 User = ""
@@ -42,19 +45,23 @@ async function loginReq(event) {
     document.getElementById("warning").innerHTML = output
     return null
   }
+  //------------LOGIN SUCCESS
   User = JSON.parse(output)
-  console.log(User)
   document.getElementsByClassName("nav")[0].innerHTML += `<li><a id="tripFormLink" href="#">Plann a Trip</a></li>`
   document.getElementById("tripFormLink").addEventListener("click", tripForm)
-  sessionStorage.setItem("User", User["fistname"])
-  sessionStorage.setItem("UserEmail", User["email"])
-  document.getElementById("loginLink").style.display = "none"
-  document.getElementById("registerLink").innerHTML = User["firstname"]
+  // sessionStorage.setItem("User", User.id)
+  // sessionStorage.setItem("UserEmail", User.email)
+  document.getElementById("loginLink").removeEventListener("click", loginForm)
   document.getElementById("registerLink").removeEventListener("click", registerFormDisp)
-  document.getElementById("registerLink").id = "account"
+  document.getElementById("loginLink").innerHTML = "Account"
+  document.getElementById("registerLink").innerHTML = "Log Out"
+  document.getElementById("loginLink").id = "account"
+  document.getElementById("registerLink").id = "logout"
   document.getElementById("account").addEventListener("click", updateUserForm)
   document.getElementById("GetTrips").addEventListener("click", getTrips)
-  document.getElementById("warning").style.display = "none"
+  document.getElementById("logout").addEventListener("click", () => {
+    location.reload()
+  })
   getTrips()
 }
 

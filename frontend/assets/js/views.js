@@ -64,7 +64,7 @@ async function getTrips() {
       }
       if (id == trip["driver_id"]) {
         let modify = `<button onclick="updateTripForm(${trip.id}, '${trip.departure_time}', '${trip.departure}', '${trip.arrival}', ${trip.avalable_places}, ${trip.price_per_passanger})" id='updateTrip'>MODIFY</button>`
-        let delTrip = `<button onclick="deleteTrip(${trip.id})" id='getOn'>DELETE</button>`
+        let delTrip = `<button onclick="deleteTripModal(${trip.id})" id='getOn'>DELETE</button>`
         addTd = `<td>${delTrip} ${modify}</td>`
       }
     }
@@ -269,6 +269,7 @@ function updateTripForm(id, dep_time, departure, arrival, avalablePlaces, price_
   document.getElementById("tripUpdateForm").addEventListener("submit", updateTrip)
 }
 
+//---------------------------------------------------------------------CONFIRMATION DELETE USER MODAL
 function deleteUserModal() {
   let modalContent = `
 <div class="modal-content">
@@ -289,4 +290,28 @@ function deleteUserModal() {
     document.getElementById("dispModal").style.display = "none"
   })
   document.getElementById("deleteUser").addEventListener("click", deleleteUser)
+}
+
+function deleteTripModal(tripID) {
+  let modalContent = `
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Confirm Deleting Trip.</h2><br><br>
+    <h4>The Trip number will be deleted.</h4><br><br>
+    <button id="deleteTrip" onclick="deleteTrip(${tripID})">DELETE TRIP</button>
+    <button id="cancelModal">CANCEL</button>
+  </div>
+    `
+  document.getElementById("dispModal").innerHTML = modalContent
+  document.getElementById("dispModal").style.display = "block"
+  document.getElementsByClassName("close")[0].addEventListener("click", () => {
+    document.getElementById("dispModal").style.display = "none"
+  })
+
+  document.getElementById("cancelModal").addEventListener("click", () => {
+    document.getElementById("dispModal").style.display = "none"
+  })
+  document.getElementById("deleteTrip").addEventListener("click", () => {
+    document.getElementById("dispModal").style.display = "none"
+  })
 }
