@@ -186,10 +186,36 @@ function updateUserForm() {
       <br /><br />
       <input type="submit" value="Update Profile" />
     </form><br><br><br><br>
-    <button id="deleteUser" value="1">DELETE ACCOUNT</button>
+    <button id="deleteUserbtn">DELETE ACCOUNT</button>
+</div>
+
+<div id="confirmDeleteUser" class="modal">
+
+<!-- Modal content -->
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <h2>Are you Sure to delete your account.</h2><br><br>
+  <label >Plese Confirm your Password:</label><br /><br><br>
+  <input type="password" id="ModalPassword" /><br><br><br>
+  <button id="deleteUser">DELETE ACCOUNT</button><br><br>
+  <button id="cancelModal">CANCEL</button>
+  
+</div>
+
     `
+
   document.getElementById('main').innerHTML = main
   document.getElementById('updateUserForm').addEventListener('submit', updateUser)
+
+  document.getElementById('deleteUserbtn').addEventListener('click', () => {
+    document.getElementById('confirmDeleteUser').style.display = 'block'
+  })
+  document.getElementsByClassName('close')[0].addEventListener('click', () => {
+    document.getElementById('confirmDeleteUser').style.display = 'none'
+  })
+  document.getElementById('cancelModal').addEventListener('click', () => {
+    document.getElementById('confirmDeleteUser').style.display = 'none'
+  })
   document.getElementById('deleteUser').addEventListener('click', deleleteUser)
 }
 
@@ -268,3 +294,5 @@ function updateTripForm(id, dep_time, departure, arrival, avalablePlaces, price_
   document.getElementById('main').innerHTML = main
   document.getElementById('tripUpdateForm').addEventListener('submit', updateTrip)
 }
+
+//---------------------------------------DELETE USER MODAL

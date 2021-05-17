@@ -141,11 +141,13 @@ async function updateUser(event) {
 //-------------------------------------------------------------------------DELETE USER
 async function deleleteUser(event) {
   console.log('DELETE USER REQUEST JS')
-  event.preventDefault()
   if (User == '') return null
   let userID = User['id']
-  let userPass = document.getElementsByName('password')[0].value
+  console.log(userID)
+  let userPass = document.getElementById('ModalPassword').value
+  console.log(userPass)
   if (userPass == '') return null
+  console.log('DELETE FETCH REQUEST')
   let res = await fetch(url + 'deleteuser/', {
     method: 'POST',
     headers: {
